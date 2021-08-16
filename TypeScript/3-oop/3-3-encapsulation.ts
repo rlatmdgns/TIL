@@ -40,4 +40,25 @@
   }
   const maker = CoffeeMaker.makeMachine(2);
   maker.fillCoffeeBeans(2)
+
+  class User {
+
+    get fullName():string {
+      return `${this.firstName} ${this.lastName}`
+    }
+    private internalAge = 4;
+    get age():number {
+      return this.internalAge;
+    }
+    set age(num:number){
+      // if(num< 0 ){
+
+      // }
+       this.internalAge = num;
+    }
+    constructor(private firstName: string,private lastName:string){
+    }
+  }
+  const user = new User('Strve','Jobs');
+
 }
