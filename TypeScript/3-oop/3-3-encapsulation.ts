@@ -22,7 +22,7 @@
 
     fillCoffeeBeans(beans: number) {
       if (beans < 0) {
-        throw new Error("value for bean should be greater than 0"ß);
+        throw new Error("value for bean should be greater than 0");
       }
       this.coffeeBeans += beans;
     }
