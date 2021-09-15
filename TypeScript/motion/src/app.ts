@@ -1,4 +1,4 @@
-import { PageComponent } from "./components/page.js";
+import { PageComponent } from "./components/page/page.js";
 
 class App {
   private readonly page: PageComponent;
