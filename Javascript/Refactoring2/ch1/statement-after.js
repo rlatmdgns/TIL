@@ -35,12 +35,10 @@ const renderHtml = (data) => {
   return result;
 };
 
-const statement = (invoice, plays) => {
+export const statement = (invoice, plays) => {
   return renderPlanText(createStatementData(invoice, plays));
 };
 
-const htmlStatement = (invoice, plays) => {
+export const htmlStatement = (invoice, plays) => {
   return renderHtml(createStatementData(invoice, plays));
 };
-
-export default statement;
