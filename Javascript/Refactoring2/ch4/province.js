@@ -62,4 +62,9 @@ export default class Province {
       })
     return result
   }
+
+  get profit(){
+    // 수익
+    return this.demandValue - this.demandCost
+  }
 }
