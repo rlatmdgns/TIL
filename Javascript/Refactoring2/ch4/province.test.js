@@ -33,6 +33,52 @@ describe("province", () => {
     expect(asia.shortfall).equals(-6);
     expect(asia.profit).equals(292);
   });
+
+  it("zero demand", () => {
+    asia.demand = 0;
+    expect(asia.shortfall).equals(-25);
+    expect(asia.profit).equals(0);
+  });
+
+  it("negative demand", () => {
+    asia.demand = -1;
+    expect(asia.shortfall).equals(-26);
+    expect(asia.profit).equals(-10);
+  });
+
+  it("empty  demand", () => {
+    asia.demand = "";
+    expect(asia.shortfall).NaN;
+    expect(asia.profit).NaN;
+  });
 });
 
+describe("no producers", () => {
+  let noProducers;
+  beforeEach(() => {
+    const data = { name: "no producers", producers: [], demand: 30, price: 20 };
+    noProducers = new Province(data);
+  });
+
+  it("shortfall", () => {
+    expect(noProducers.shortfall).equal(30); // 검증
+  });
+
+  it("profit", () => {
+    expect(noProducers.profit).equal(0);
+  });
+});
+
+describe("string for producers", () => {
+  it("", () => {
+    const data = {
+      name: "string producers",
+      producers: "",
+      demand: 30,
+      price: 20,
+    };
+    const prov = new Province(data);
+    expect(prov.shortfall).equals(0);
+  });
+});
 /* 일반적으로 it 구문하나당 검흥도 하나씩만 하는 게 좋음 */
