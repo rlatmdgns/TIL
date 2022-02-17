@@ -1,16 +1,13 @@
-import assert from "assert";
-
 class ProductionPlan {
-  #production = 0;
   #adjustments = [];
   get production() {
-    assert(this.#production === this.calculatedProduction);
     return this.#production;
   }
-  get calculatedProduction() {}
+  get calculatedProduction() {
+    return this.#adjustments.reduce((sum, a) => sum + arguments.amount, 0);
+  }
   applyAdjustment(anAdjustment) {
     this.#adjustments.push(anAdjustment);
-    this.#production += anAdjustment.amount;
   }
 }
 
