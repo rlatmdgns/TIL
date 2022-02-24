@@ -31,7 +31,6 @@ class Rating {
     let result = 1;
     if (this.history.length < 5) result += 4;
     result += this.history.filter((v) => v.profit < 0).length;
-    if (voyage.zone === "중국" && this.hasChinaHistory) result -= 2;
     return Math.max(result, 0);
   }
 
@@ -40,20 +39,44 @@ class Rating {
     let result = 2;
     if (this.voyage.zone === "중국") result += 1;
     if (this.voyage.zone === "동인도") result += 1;
-    if (this.voyage.zone === "중국" && this.hasChinaHistory) {
-      result += 3;
-      if (this.history.length > 10) result += 1;
-      if (this.voyage.length > 12) result += 1;
-      if (this.voyage.length > 18) result -= 1;
-    } else {
-      if (this.history.length > 8) result += 1;
-      if (this.voyage.length > 14) result -= 1;
-    }
+    result = this.historyLengthFactor;
+    result = this.voyageLengthFactor;
+    return result;
+  }
+
+  get historyLengthFactor() {
+    return this.history.length > 8 ? 1 : 0;
+  }
+  get voyageLengthFactor() {
+    return this.voyage.length > 14 ? -1 : 0;
+  }
+}
+class ExperiencedChinaRating extends Rating {
+  get captainHistoryRisk() {
+    const result = super.captainHistoryRisk - 2;
+    return Math.max(result, 0);
+  }
+  get historyLengthFactor() {
+    return this.history.length > 10 ? 1 : 0;
+  }
+  get voyageProfitFactor() {
+    return super.voyageProfitFactor + 3;
+  }
+  get voyageLengthFactor() {
+    let result = this.voyageProfitFactor;
+    if (this.voyage.length > 12) result += 1;
+    if (this.voyage.length > 18) result -= 1;
     return result;
   }
 }
 
-const rating = (voyage, history) => new Rating(voyage, history);
+const createRating = (voyage, history) => {
+  if (voyage.zone === "중국" && hasChinaHistory) {
+    return new ExperiencedChinaRating(voyage, history);
+  }
+  return new Rating(voyage, history);
+};
+const rating = (voyage, history) => createRating(voyage, history).value;
 
 const voyage = { zone: "서인도", length: 10 };
 const histories = [
@@ -62,7 +85,7 @@ const histories = [
   { zone: "중국", profit: -2 },
   { zone: "서아프리카", profit: 7 },
 ];
-const myRating = rating(voyage, histories);
+const myRating = createRating(voyage, histories);
 console.log({
   voyageRisk: myRating.voyageRisk,
   captainHistoryRisk: myRating.captainHistoryRisk,
